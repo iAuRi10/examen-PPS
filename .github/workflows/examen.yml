@@ -84,8 +84,10 @@ jobs:
     steps:
       - name: Verificar los actions del repo.
         uses: actions/checkout@v3
+      - name: Instalar Gitleaks
+        run: |
+          wget -O gitleaks https://github.com/zricethezav/gitleaks/releases/download/v7.2.0/gitleaks-linux-amd64
+          chmod +x gitleaks
+          sudo mv gitleaks /usr/local/bin/
       - name: Ejecutar Gitleaks
-        uses: zricethezav/gitleaks-action@v6
-        with:
-          args: --path=iAuRi10/examen-PPS. --verbose
-
+        run: gitleaks --repo=iAuRi10/examen-PPS --verbose
