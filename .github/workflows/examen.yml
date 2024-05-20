@@ -72,8 +72,8 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-      - name: Instalar la herramienta Pylint
-        run: pip install pylint
-      - name: Desactivar los errores c016 y w0622.
+      - name: Instalar las herramientas necesarias
+        run: |
+          pip install pylint pydantic sqlalchemy fastapi
+      - name: Ejecutar Pylint
         run: pylint --disable=C0116,W0622 src/
-
