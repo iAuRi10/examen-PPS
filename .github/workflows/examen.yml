@@ -85,7 +85,7 @@ jobs:
       - name: Verificar los actions del repo.
         uses: actions/checkout@v3
       - name: Ejecutar Gitleaks
-        uses: zricethezav/gitleaks-action@v7
+        uses: zricethezav/gitleaks-action@v6
         with:
-          args: --repo-path=iAuRi10/examen-PPS. --verbose
+          args: --path=iAuRi10/examen-PPS. --verbose
 
