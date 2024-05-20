@@ -49,3 +49,16 @@ jobs:
             docker rmi aurii/fastapi
             docker run -d -p 80:8000 --name web aurii/fastapi
 
+  test_conexion:
+    name: Test de conexion.
+    runs-on: ubuntu-latest
+    needs: aws
+    steps:
+      - name: Esperar tiempo
+        run: sleep 20 #20 segundos para que de tiempo a cargarr.
+
+      - name: Ver estado de conexion de status.
+        run: curl -f http://${{ secrets.AMZ_IP }}/status
+
+      - name: Ver estado de conexion de students/1.
+        run: curl -f http://${{ secrets.AMZ_IP }}/students/1
