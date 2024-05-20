@@ -61,19 +61,31 @@ jobs:
   #     - name: Ver estado de conexion de students/1.
   #       run: curl -f http://${{ secrets.AMZ_IP }}/students/1
   
-  lint:
-    name: Hacemos lint con Pylint
-    runs-on: ubuntu-latest
-    # needs: test_conexion
-    steps:
-      - name: Verificar los actions del repo.
-        uses: actions/checkout@v3
-      - name: lanzar pytohn enviomerent
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-      - name: Instalar las herramientas necesarias
-        run: |
-          pip install pylint pydantic sqlalchemy fastapi
-      - name: Ejecutar Pylint
-        run: pylint --disable=C0116,W0622 src/
+  # lint:
+  #   name: Hacemos lint con Pylint
+  #   runs-on: ubuntu-latest
+  #   # needs: test_conexion
+  #   steps:
+  #     - name: Verificar los actions del repo.
+  #       uses: actions/checkout@v3
+  #     - name: lanzar pytohn enviomerent
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: "3.11"
+  #     - name: Instalar las herramientas necesarias
+  #       run: |
+  #         pip install pylint pydantic sqlalchemy fastapi
+  #     - name: Ejecutar Pylint
+  #       run: pylint --disable=C0116,W0622 src/
+
+  gitleaks:
+  name: Gitleaks para buscar fugas de información
+  runs-on: ubuntu-latest
+  steps:
+    - name: Verificar los actions del repo.
+      uses: actions/checkout@v3
+    - name: Ejecutar Gitleaks
+      uses: zricethezav/gitleaks-action@v7
+      with:
+        args: --repo-path=iAuRi10/examen-PPS. --verbose
+
