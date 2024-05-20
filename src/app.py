@@ -1,5 +1,5 @@
 '''
-docstring del módulo..
+docstring del módulo.....
 '''
 
 from fastapi import FastAPI, HTTPException
