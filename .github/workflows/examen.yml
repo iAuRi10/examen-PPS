@@ -12,71 +12,71 @@ on:
 
 jobs:
 
-  # build:
-  #   name: Docker build and push
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
+  build:
+    name: Docker build and push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
         
-  #     - name: Login to DockerHub
-  #       uses: docker/login-action@v2
-  #       with:
-  #         username: ${{ secrets.DH_USUARIO }}
-  #         password: ${{ secrets.DH_TOKEN }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DH_USUARIO }}
+          password: ${{ secrets.DH_TOKEN }}
           
-  #     - name: Build and push Docker image
-  #       uses: docker/build-push-action@v4
-  #       with:
-  #         context: .
-  #         push: true 
-  #         tags: ${{ secrets.DH_USUARIO }}/fastapi:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true 
+          tags: ${{ secrets.DH_USUARIO }}/fastapi:latest
 
-  # aws:
-  #   name: Deploy image to aws
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   steps:  
-  #   - name: multiple command
-  #     uses: appleboy/ssh-action@master
-  #     with:
-  #       host: ${{ secrets.AMZ_IP }}
-  #       username: ${{ secrets.AMZ_USUARIO }}
-  #       key: ${{ secrets.AMZ_CLAVE }}
-  #       port: 22  # ${{ secrets.PORT }}
-  #       script: |
-  #           sleep 45
-  #           docker stop web && docker rm web
-  #           docker rmi aurii/fastapi
-  #           docker run -d -p 80:8000 --name web aurii/fastapi
+  aws:
+    name: Deploy image to aws
+    runs-on: ubuntu-latest
+    needs: build
+    steps:  
+    - name: multiple command
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.AMZ_IP }}
+        username: ${{ secrets.AMZ_USUARIO }}
+        key: ${{ secrets.AMZ_CLAVE }}
+        port: 22  # ${{ secrets.PORT }}
+        script: |
+            sleep 45
+            docker stop web && docker rm web
+            docker rmi aurii/fastapi
+            docker run -d -p 80:8000 --name web aurii/fastapi
 
-  # test_conexion:
-  #   name: Test de conexion.
-  #   runs-on: ubuntu-latest
-  #   needs: aws
-  #   steps:
-  #     - name: Esperar tiempo
-  #       run: sleep 20 #20 segundos para que de tiempo a cargarr.
-  #     - name: Ver estado de conexion de status.
-  #       run: curl -f http://${{ secrets.AMZ_IP }}/status
-  #     - name: Ver estado de conexion de students/1.
-  #       run: curl -f http://${{ secrets.AMZ_IP }}/students/1
+  test_conexion:
+    name: Test de conexion.
+    runs-on: ubuntu-latest
+    needs: aws
+    steps:
+      - name: Esperar tiempo
+        run: sleep 20 #20 segundos para que de tiempo a cargarr.
+      - name: Ver estado de conexion de status.
+        run: curl -f http://${{ secrets.AMZ_IP }}/status
+      - name: Ver estado de conexion de students/1.
+        run: curl -f http://${{ secrets.AMZ_IP }}/students/1
   
-  # lint:
-  #   name: Hacemos lint con Pylint
-  #   runs-on: ubuntu-latest
-  #   # needs: test_conexion
-  #   steps:
-  #     - name: Verificar los actions del repo.
-  #       uses: actions/checkout@v3
-  #     - name: lanzar pytohn enviomerent
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: "3.11"
-  #     - name: Instalar las herramientas necesarias
-  #       run: |
-  #         pip install pylint pydantic sqlalchemy fastapi
-  #     - name: Ejecutar Pylint
-  #       run: pylint --disable=C0116,W0622 src/
+  lint:
+    name: Hacemos lint con Pylint
+    runs-on: ubuntu-latest
+    # needs: test_conexion
+    steps:
+      - name: Verificar los actions del repo.
+        uses: actions/checkout@v3
+      - name: lanzar pytohn enviomerent
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Instalar las herramientas necesarias
+        run: |
+          pip install pylint pydantic sqlalchemy fastapi
+      - name: Ejecutar Pylint
+        run: pylint --disable=C0116,W0622 src/
 
   gitleaks:
     name: Gitleaks para buscar fugas de información
