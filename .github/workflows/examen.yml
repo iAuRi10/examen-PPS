@@ -64,7 +64,7 @@ jobs:
   lint:
     name: Hacemos lint con Pylint
     runs-on: ubuntu-latest
-    # needs: test_conexion
+    needs: test_conexion
     steps:
       - name: Verificar los actions del repo.
         uses: actions/checkout@v3
@@ -81,6 +81,7 @@ jobs:
   gitleaks:
     name: Gitleaks para buscar fugas de información
     runs-on: ubuntu-latest
+    needs: lint
     steps:
       - name: Verificar los actions del repo.
         uses: actions/checkout@v3
