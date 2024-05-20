@@ -56,9 +56,24 @@ jobs:
     steps:
       - name: Esperar tiempo
         run: sleep 20 #20 segundos para que de tiempo a cargarr.
-
       - name: Ver estado de conexion de status.
         run: curl -f http://${{ secrets.AMZ_IP }}/status
-
       - name: Ver estado de conexion de students/1.
         run: curl -f http://${{ secrets.AMZ_IP }}/students/1
+  
+  lint:
+    name: Hacemos lint con Pylint
+    runs-on: ubuntu-latest
+    needs: test_conexion
+    steps:
+      - name: Verificar los actions del repo.
+        uses: actions/checkout@v3
+      - name: lanzar pytohn enviomerent
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Instalar la herramienta Pylint
+        run: pip install pylint
+      - name: Desactivar los errores c016 y w0622.
+        run: pylint --disable=C0116,W0622 .
+
