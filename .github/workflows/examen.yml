@@ -79,13 +79,13 @@ jobs:
   #       run: pylint --disable=C0116,W0622 src/
 
   gitleaks:
-  name: Gitleaks para buscar fugas de información
-  runs-on: ubuntu-latest
-  steps:
-    - name: Verificar los actions del repo.
-      uses: actions/checkout@v3
-    - name: Ejecutar Gitleaks
-      uses: zricethezav/gitleaks-action@v7
-      with:
-        args: --repo-path=iAuRi10/examen-PPS. --verbose
+    name: Gitleaks para buscar fugas de información
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar los actions del repo.
+        uses: actions/checkout@v3
+      - name: Ejecutar Gitleaks
+        uses: zricethezav/gitleaks-action@v7
+        with:
+          args: --repo-path=iAuRi10/examen-PPS. --verbose
 
